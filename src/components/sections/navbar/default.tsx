@@ -13,6 +13,7 @@ import { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/layout/mode-toggle"
 import { useAuth } from "@/context/auth-content"
+import { SignOutButton } from '@clerk/nextjs'         
 
 // -------------------- Types --------------------
 interface NavbarLink {
@@ -117,7 +118,15 @@ export default function Navbar({
                 </a>
               ),
             )}
-
+  {/* NEW ── Sign‑out (desktop) */}
+  {isSignedIn && (
+              <SignOutButton redirectUrl="/">
+                <Button variant="outline" className="ml-2 hidden md:inline-flex">
+                  Sign out
+                </Button>
+              </SignOutButton>
+            )}
+                  <ModeToggle />
             {/* mobile hamburger */}
             <Sheet>
               <SheetTrigger asChild>
@@ -150,13 +159,22 @@ export default function Navbar({
                         </a>
                       </Button>
                     ))}
+
+{isSignedIn && (
+              <SignOutButton redirectUrl="/">
+                <Button variant="outline" className="ml-2 hidden md:inline-flex">
+                  Sign out
+                </Button>
+              </SignOutButton>
+            )}
                   </div>
                 </nav>
+            
               </SheetContent>
             </Sheet>
 
-            {/* dark / light toggle */}
-            <ModeToggle />
+           
+      
           </NavbarRight>
         </NavbarComponent>
       </div>
