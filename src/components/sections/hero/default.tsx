@@ -27,7 +27,7 @@ interface HeroProps {
 }
 
 export default function Hero({
-  title = "Give your big idea the design it deserves",
+  title = "mokours",
   description = "Professionally designed blocks and templates built with React, Shadcn/ui and Tailwind that will help your product stand out.",
   mockup = (
     <Screenshot
@@ -42,7 +42,7 @@ export default function Hero({
   badge = (
     <Badge variant="outline" className="animate-appear">
       <span className="text-muted-foreground">
-        New version of Launch UI is out!
+        New courses/tuitions are coming soon!
       </span>
       <a href="https://www.launchuicomponents.com/" className="flex items-center gap-1">
         Get started
@@ -52,13 +52,13 @@ export default function Hero({
   ),
   buttons = [
     {
-      href: "https://www.launchuicomponents.com/",
+      href: "/auth/sign-up",
       text: "Get Started",
       variant: "default",
     },
     {
-      href: "https://www.launchuicomponents.com/",
-      text: "Github",
+      href: "https://www.vincedotcode.com/",
+      text: "Portfolio",
       variant: "glow",
       icon: <Github className="mr-2 size-4" />,
     },

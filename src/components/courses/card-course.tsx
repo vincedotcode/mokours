@@ -1,68 +1,81 @@
-'use client'
+import Image from "next/image"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { CheckCircle, Clock } from 'lucide-react'
-import Link from 'next/link'
+interface CourseCardProps {
+    course: {
+        id: string
+        title: string
+        description: string
+        price_rs: number
+        status: "draft" | "published"
+        thumbnail_url: string
+        category: string | null
+        content: string | null
+        published: boolean
+        created_by: string
+        created_at: string
+        updated_at: string
+    }
+}
 
+/* ------------------------------------------------------------------ */
+/* Types                                                              */
+/* ------------------------------------------------------------------ */
 export interface Course {
-  id: string
-  title: string
-  price_rs: number
-  status: 'draft' | 'published'
-  learners: number | null
-  thumbnail_url: string
+    id: string
+    title: string
+    description: string
+    price_rs: number
+    status: "draft" | "published"
+    thumbnail_url: string
+    category: string | null
+    content: string | null
+    published: boolean
+    created_by: string
+    created_at: string
+    updated_at: string
 }
 
-interface CardCourseProps {
-  course: Course
-  /** optional CTA button label (defaults to "Enroll") */
-  ctaLabel?: string
-}
 
-/**
- * Reusable card for a single course. Plug it anywhere — grid, carousel, etc.
- */
-export default function CardCourse({ course, ctaLabel = 'Enroll' }: CardCourseProps) {
-  return (
-    <Card className="group relative overflow-hidden hover:shadow-lg transition-shadow">
-      <img
-        src={course.thumbnail_url}
-        alt={course.title}
-        className="h-32 w-full object-cover"
-      />
 
-      <CardHeader>
-        <CardTitle className="line-clamp-1 text-base font-semibold">
-          {course.title}
-        </CardTitle>
-        <CardDescription>Rs {course.price_rs.toLocaleString()}</CardDescription>
-      </CardHeader>
+export default function CourseCard({ course }: CourseCardProps) {
+    // Format price to Indian Rupees
+    const formattedPrice = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+    }).format(course.price_rs)
 
-      <CardContent className="flex items-center justify-between">
-        <Badge
-          variant={course.status === 'published' ? 'default' : 'secondary'}
-          className="inline-flex items-center gap-1"
-        >
-          {course.status === 'published' ? (
-            <CheckCircle className="h-3 w-3" />
-          ) : (
-            <Clock className="h-3 w-3" />
-          )}
-          {course.status}
-        </Badge>
-
-        <span className="text-sm text-muted-foreground">
-          {course.learners ?? 0} learners
-        </span>
-      </CardContent>
-
-      <Button asChild className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-primary/90 text-primary-foreground rounded-none">
-        <Link href={`/courses/${course.id}`} className="flex-1 justify-center">
-          {ctaLabel}
-        </Link>
-      </Button>
-    </Card>
-  )
+    return (
+        <Card className="overflow-hidden transition-all duration-200 hover:shadow-lg">
+            <div className="aspect-video relative overflow-hidden">
+                <Image
+                    src={course.thumbnail_url || "/placeholder.svg?height=200&width=400"}
+                    alt={course.title}
+                    fill
+                    className="object-cover transition-transform duration-300 hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+            </div>
+            <CardHeader className="p-4 pb-2">
+                <div className="flex justify-between items-start">
+                    <h3 className="font-semibold text-lg line-clamp-1">{course.title}</h3>
+                    {course.category && (
+                        <Badge variant="outline" className="ml-2 whitespace-nowrap">
+                            {course.category}
+                        </Badge>
+                    )}
+                </div>
+            </CardHeader>
+            <CardContent className="p-4 pt-2 pb-2">
+                <p className="text-sm text-muted-foreground line-clamp-2">{course.description}</p>
+            </CardContent>
+            <CardFooter className="p-4 pt-2 flex justify-between items-center">
+                <p className="font-bold text-lg">{formattedPrice}</p>
+                <Button className="transition-colors duration-300 hover:bg-green-600">Enroll Now</Button>
+            </CardFooter>
+        </Card>
+    )
 }
